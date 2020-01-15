@@ -82,7 +82,7 @@ export default {
       return;
     }
     // let newParentData = utils.defaultSchema[value];
-    let newParentDataItem = utils.defaultSchema[value];
+    let newParentDataItem = utils.defaultSchema[value] || {type: value};
 
     // 将备注过滤出来
     let parentDataItem = parentData.description ? { description: parentData.description } : {};

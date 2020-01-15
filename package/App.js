@@ -16,6 +16,7 @@ import {
 } from 'antd';
 const FormItem = Form.Item;
 const Option = Select.Option;
+const OptGroup = Select.OptGroup;
 const { TextArea } = Input;
 const TabPane = Tabs.TabPane;
 
@@ -25,7 +26,7 @@ import _ from 'underscore';
 import { connect } from 'react-redux';
 import SchemaJson from './components/SchemaComponents/SchemaJson.js';
 import PropTypes from 'prop-types';
-import { SCHEMA_TYPE, debounce } from './utils.js';
+import { SCHEMA_TYPE, debounce, EXT_SCHEMA_TYPE } from './utils.js';
 import handleSchema from './schema';
 const GenerateSchema = require('generate-schema/src/schemas/json.js');
 const utils = require('./utils');
@@ -55,6 +56,9 @@ class jsonSchema extends React.Component {
     this.Model = this.props.Model.schema;
     this.jsonSchemaData = null;
     this.jsonData = null;
+    this.props.extSchemaType && this.props.extSchemaType.map((item) => {
+      EXT_SCHEMA_TYPE.push(item);
+    })
   }
 
   // json 导入弹窗
@@ -408,13 +412,26 @@ class jsonSchema extends React.Component {
                   onChange={e => this.changeType(`type`, e)}
                   value={schema.type || 'object'}
                 >
-                  {SCHEMA_TYPE.map((item, index) => {
-                    return (
-                      <Option value={item} key={index}>
-                        {item}
-                      </Option>
-                    );
-                  })}
+                  <OptGroup label="base type">
+                    {SCHEMA_TYPE.map((item, index) => {
+                      return (
+                        <Option value={item} key={index}>
+                          {item}
+                        </Option>
+                      );
+                    })}
+                  </OptGroup>
+                  {EXT_SCHEMA_TYPE && (
+                    <OptGroup label="ext type">
+                      {EXT_SCHEMA_TYPE.map((item, index) => {
+                        return (
+                          <Option value={item} key={index}>
+                            {item}
+                          </Option>
+                        );
+                      })}
+                    </OptGroup>
+                  )}
                 </Select>
               </Col>
               {this.props.isMock && (
@@ -494,6 +511,7 @@ jsonSchema.childContextTypes = {
 
 jsonSchema.propTypes = {
   data: PropTypes.string,
+  extSchemaType: PropTypes.array,
   onChange: PropTypes.func,
   showEditor: PropTypes.bool,
   isMock: PropTypes.bool,

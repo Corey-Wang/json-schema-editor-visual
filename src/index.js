@@ -53,6 +53,7 @@ render(
       showEditor={true}
       isMock={false}
       data={''}
+      extSchemaType={['int8', 'int16', 'int32', 'uint', 'uint8', 'uint16', 'uint32']}
       onChange={e => {
         console.log('changeValue', e);
       }}

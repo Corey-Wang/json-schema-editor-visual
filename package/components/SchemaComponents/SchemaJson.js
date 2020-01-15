@@ -18,12 +18,13 @@ import FieldInput from './FieldInput'
 
 const FormItem = Form.Item;
 const Option = Select.Option;
+const OptGroup = Select.OptGroup;
 const { TextArea } = Input;
 import './schemaJson.css';
 import _ from 'underscore';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { JSONPATH_JOIN_CHAR, SCHEMA_TYPE } from '../../utils.js';
+import { JSONPATH_JOIN_CHAR, SCHEMA_TYPE, EXT_SCHEMA_TYPE } from '../../utils.js';
 const InputGroup = Input.Group;
 import LocaleProvider from '../LocalProvider/index.js';
 import utils from '../../utils';
@@ -156,13 +157,26 @@ class SchemaArray extends PureComponent {
                 onChange={this.handleChangeType}
                 value={items.type}
               >
-                {SCHEMA_TYPE.map((item, index) => {
-                  return (
-                    <Option value={item} key={index}>
-                      {item}
-                    </Option>
-                  );
-                })}
+                <OptGroup label="base type">
+                  {SCHEMA_TYPE.map((item, index) => {
+                    return (
+                      <Option value={item} key={index}>
+                        {item}
+                      </Option>
+                    );
+                  })}
+                </OptGroup>
+                {EXT_SCHEMA_TYPE && (
+                  <OptGroup label="ext type">
+                    {EXT_SCHEMA_TYPE.map((item, index) => {
+                      return (
+                        <Option value={item} key={index}>
+                          {item}
+                        </Option>
+                      );
+                    })}
+                  </OptGroup>
+                )}
               </Select>
             </Col>
             {this.context.isMock && (
@@ -383,13 +397,26 @@ class SchemaItem extends PureComponent {
               onChange={this.handleChangeType}
               value={value.type}
             >
-              {SCHEMA_TYPE.map((item, index) => {
-                return (
-                  <Option value={item} key={index}>
-                    {item}
-                  </Option>
-                );
-              })}
+              <OptGroup label="base type">
+                {SCHEMA_TYPE.map((item, index) => {
+                  return (
+                    <Option value={item} key={index}>
+                      {item}
+                    </Option>
+                  );
+                })}
+              </OptGroup>
+              {EXT_SCHEMA_TYPE && (
+                <OptGroup label="ext type">
+                  {EXT_SCHEMA_TYPE.map((item, index) => {
+                    return (
+                      <Option value={item} key={index}>
+                        {item}
+                      </Option>
+                    );
+                  })}
+                </OptGroup>
+              )}
             </Select>
           </Col>
 
