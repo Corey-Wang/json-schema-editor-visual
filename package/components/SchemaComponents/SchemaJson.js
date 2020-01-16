@@ -24,20 +24,20 @@ import './schemaJson.css';
 import _ from 'underscore';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { JSONPATH_JOIN_CHAR, SCHEMA_TYPE, EXT_SCHEMA_TYPE } from '../../utils.js';
+import { JSONPATH_JOIN_CHAR, SCHEMA_TYPE } from '../../utils.js';
 const InputGroup = Input.Group;
 import LocaleProvider from '../LocalProvider/index.js';
 import utils from '../../utils';
 import MockSelect from '../MockSelect/index.js';
 
-const mapping = (name, data, showEdit, showAdv) => {
+const mapping = (name, data, showEdit, showAdv, extType) => {
   switch (data.type) {
     case 'array':
-      return <SchemaArray prefix={name} data={data} showEdit={showEdit} showAdv={showAdv} />;
+      return <SchemaArray prefix={name} data={data} showEdit={showEdit} showAdv={showAdv} extType={extType} />;
       break;
     case 'object':
       let nameArray = [].concat(name, 'properties');
-      return <SchemaObject prefix={nameArray} data={data} showEdit={showEdit} showAdv={showAdv} />;
+      return <SchemaObject prefix={nameArray} data={data} showEdit={showEdit} showAdv={showAdv} extType={extType} />;
       break;
     default:
       return null;
@@ -118,7 +118,7 @@ class SchemaArray extends PureComponent {
   };
 
   render() {
-    const { data, prefix, showEdit, showAdv } = this.props;
+    const { data, prefix, showEdit, showAdv, extType } = this.props;
     const items = data.items;
     let prefixArray = [].concat(prefix, 'items');
 
@@ -166,9 +166,9 @@ class SchemaArray extends PureComponent {
                     );
                   })}
                 </OptGroup>
-                {EXT_SCHEMA_TYPE && (
+                {extType && (
                   <OptGroup label="ext type">
-                    {EXT_SCHEMA_TYPE.map((item, index) => {
+                    {extType.map((item, index) => {
                       return (
                         <Option value={item} key={index}>
                           {item}
@@ -221,7 +221,7 @@ class SchemaArray extends PureComponent {
               ) : null}
             </Col>
           </Row>
-          <div className="option-formStyle">{mapping(prefixArray, items, showEdit, showAdv)}</div>
+          <div className="option-formStyle">{mapping(prefixArray, items, showEdit, showAdv, extType)}</div>
         </div>
       )
     );
@@ -343,7 +343,7 @@ class SchemaItem extends PureComponent {
   };
 
   render() {
-    let { name, data, prefix, showEdit, showAdv } = this.props;
+    let { name, data, prefix, showEdit, showAdv, extType } = this.props;
     let value = data.properties[name];
     let prefixArray = [].concat(prefix, name);
 
@@ -406,9 +406,9 @@ class SchemaItem extends PureComponent {
                   );
                 })}
               </OptGroup>
-              {EXT_SCHEMA_TYPE && (
+              {this.props.extType && (
                 <OptGroup label="ext type">
-                  {EXT_SCHEMA_TYPE.map((item, index) => {
+                  {this.props.extType.map((item, index) => {
                     return (
                       <Option value={item} key={index}>
                         {item}
@@ -479,7 +479,7 @@ class SchemaItem extends PureComponent {
             )}
           </Col>
         </Row>
-        <div className="option-formStyle">{mapping(prefixArray, value, showEdit, showAdv)}</div>
+        <div className="option-formStyle">{mapping(prefixArray, value, showEdit, showAdv, extType)}</div>
       </div>
     ) : null;
   }
@@ -504,7 +504,7 @@ class SchemaObjectComponent extends Component {
   }
 
   render() {
-    const { data, prefix, showEdit, showAdv } = this.props;
+    const { data, prefix, showEdit, showAdv, extType } = this.props;
     return (
       <div className="object-style">
         {Object.keys(data.properties).map((name, index) => (
@@ -515,6 +515,7 @@ class SchemaObjectComponent extends Component {
             prefix={prefix}
             showEdit={showEdit}
             showAdv={showAdv}
+            extType={extType}
           />
         ))}
       </div>
@@ -563,7 +564,7 @@ DropPlus.contextTypes = {
 };
 
 const SchemaJson = props => {
-  const item = mapping([], props.data, props.showEdit, props.showAdv);
+  const item = mapping([], props.data, props.showEdit, props.showAdv, props.extType);
   return <div className="schema-content">{item}</div>;
 };
 

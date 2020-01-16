@@ -26,15 +26,13 @@ import _ from 'underscore';
 import { connect } from 'react-redux';
 import SchemaJson from './components/SchemaComponents/SchemaJson.js';
 import PropTypes from 'prop-types';
-import { SCHEMA_TYPE, debounce, EXT_SCHEMA_TYPE } from './utils.js';
+import { SCHEMA_TYPE, debounce } from './utils.js';
 import handleSchema from './schema';
 const GenerateSchema = require('generate-schema/src/schemas/json.js');
 const utils = require('./utils');
 import CustomItem from './components/SchemaComponents/SchemaOther.js';
 import LocalProvider from './components/LocalProvider/index.js';
 import MockSelect from './components/MockSelect/index.js';
-
-
 
 class jsonSchema extends React.Component {
   constructor(props) {
@@ -56,9 +54,6 @@ class jsonSchema extends React.Component {
     this.Model = this.props.Model.schema;
     this.jsonSchemaData = null;
     this.jsonData = null;
-    this.props.extSchemaType && this.props.extSchemaType.map((item) => {
-      EXT_SCHEMA_TYPE.push(item);
-    })
   }
 
   // json 导入弹窗
@@ -421,9 +416,9 @@ class jsonSchema extends React.Component {
                       );
                     })}
                   </OptGroup>
-                  {EXT_SCHEMA_TYPE && (
+                  {this.props.extType && (
                     <OptGroup label="ext type">
-                      {EXT_SCHEMA_TYPE.map((item, index) => {
+                      {this.props.extType.map((item, index) => {
                         return (
                           <Option value={item} key={index}>
                             {item}
@@ -493,6 +488,7 @@ class jsonSchema extends React.Component {
                 data={this.props.schema}
                 showEdit={this.showEdit}
                 showAdv={this.showAdv}
+                extType={this.props.extType}
               />
             )}
           </Col>
@@ -511,11 +507,11 @@ jsonSchema.childContextTypes = {
 
 jsonSchema.propTypes = {
   data: PropTypes.string,
-  extSchemaType: PropTypes.array,
   onChange: PropTypes.func,
   showEditor: PropTypes.bool,
   isMock: PropTypes.bool,
-  Model: PropTypes.object
+  Model: PropTypes.object,
+  extType: PropTypes.array
 };
 
 export default connect(state => ({

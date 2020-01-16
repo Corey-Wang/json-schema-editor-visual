@@ -36,7 +36,8 @@ module.exports = (config = {})=>{
   Component.propTypes = {
     data: PropTypes.string,
     onChange: PropTypes.func,
-    showEditor: PropTypes.bool
+    showEditor: PropTypes.bool,
+    extType: PropTypes.array
   }
   return Component;
 

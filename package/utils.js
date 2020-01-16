@@ -12,7 +12,6 @@ exports.format = [
 ];
 const _ = require('underscore');
 exports.SCHEMA_TYPE = ['string', 'number', 'array', 'object', 'boolean', 'integer'];
-exports.EXT_SCHEMA_TYPE = [];
 exports.defaultSchema = {
   string: {
     type: 'string'
