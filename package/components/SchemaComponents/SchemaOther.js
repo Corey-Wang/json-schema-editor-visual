@@ -27,6 +27,11 @@ import AceEditor from '../AceEditor/AceEditor.js';
 import LocalProvider from '../LocalProvider/index.js';
 
 const changeOtherValue = (value, name, data, change) => {
+  if (data.type === 'integer') {
+    value = parseInt(value);
+  } else if (data.type === 'number' && value.substr(value.length - 1, 1) !== '.') {
+    value = parseFloat(value);
+  }
   data[name] = value;
   change(data);
 };
