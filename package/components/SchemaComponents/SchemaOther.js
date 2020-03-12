@@ -1,37 +1,19 @@
-import React, { PureComponent } from 'react';
-import {
-  Dropdown,
-  Menu,
-  Input,
-  InputNumber,
-  Row,
-  Col,
-  Form,
-  Select,
-  Checkbox,
-  Button,
-  Icon,
-  Modal,
-  message,
-  Tooltip,
-  Switch
-} from 'antd';
-const { TextArea } = Input;
-import './schemaJson.css';
-import _ from 'underscore';
-import { connect } from 'react-redux';
+import { Checkbox, Col, Icon, Input, InputNumber, Row, Select, Switch, Tooltip } from 'antd';
 import PropTypes from 'prop-types';
-import { JSONPATH_JOIN_CHAR, SCHEMA_TYPE } from '../../utils.js';
-const Option = Select.Option;
+import React, { PureComponent } from 'react';
+import _ from 'underscore';
 import AceEditor from '../AceEditor/AceEditor.js';
 import LocalProvider from '../LocalProvider/index.js';
+import './schemaJson.css';
+const { TextArea } = Input;
+const Option = Select.Option;
 
 const changeOtherValue = (value, name, data, change) => {
-  if (data.type === 'integer') {
-    value = parseInt(value);
-  } else if (data.type === 'number' && value.substr(value.length - 1, 1) !== '.') {
-    value = parseFloat(value);
-  }
+  // if (data.type === 'integer') {
+  //   value = parseInt(value);
+  // } else if (data.type === 'number' && value.substr(value.length - 1, 1) !== '.') {
+  //   value = parseFloat(value);
+  // }
   data[name] = value;
   change(data);
 };
@@ -289,11 +271,12 @@ class SchemaNumber extends PureComponent {
             {LocalProvider('default')}：
           </Col>
           <Col span={20}>
-            <Input
+            <InputNumber
               value={data.default}
+              style={{width: '100%'}}
               placeholder={LocalProvider('default')}
               onChange={e =>
-                changeOtherValue(e.target.value, 'default', data, this.context.changeCustomValue)
+                changeOtherValue(e, 'default', data, this.context.changeCustomValue)
               }
             />
           </Col>
