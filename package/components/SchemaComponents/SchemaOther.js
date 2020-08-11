@@ -526,11 +526,32 @@ const handleInputEditor = (e, change) => {
 
 const CustomItem = (props, context) => {
   const { data } = props;
-  const optionForm = mapping(JSON.parse(data));
+  const dataJson = JSON.parse(data);
+  const optionForm = mapping(dataJson);
 
   return (
     <div>
       <div>{optionForm}</div>
+      <div>
+        <Row>
+          <Col span={12}>
+            <Row type="flex" align="middle">
+              <Col span={8} className="other-label">
+                {LocalProvider('intelliCaseNumber')}：
+              </Col>
+              <Col span={16}>
+                <InputNumber
+                  value={dataJson.intelliCaseNumber}
+                  placeholder={LocalProvider('intelliCaseNumber')}
+                  onChange={e =>
+                    changeOtherValue(e, 'intelliCaseNumber', dataJson, context.changeCustomValue)
+                  }
+                />
+              </Col>
+            </Row>
+          </Col>
+        </Row>
+      </div>
       <div className="default-setting">{LocalProvider('all_setting')}</div>
       <AceEditor
         data={data}
